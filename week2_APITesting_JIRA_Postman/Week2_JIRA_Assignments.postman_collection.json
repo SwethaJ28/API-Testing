@@ -1,0 +1,647 @@
+{
+	"info": {
+		"_postman_id": "e506e38f-a613-4f36-b891-05c3894315e9",
+		"name": "Week2_JIRA_Assignments",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24442514"
+	},
+	"item": [
+		{
+			"name": "POST_CreateIssue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var respp=pm.response.json();\r",
+							"pm.globals.set(\"gissueID\",respp.key);\r",
+							"\r",
+							"var issueKey = respp.key;\r",
+							"\r",
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 203, 204, 205, 206, 207]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"Created\");\r",
+							"});\r",
+							"\r",
+							"console.log(\"The issue is successfully created in JIRA - Issue Key: \"+issueKey);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Y5o1E4HZ2q5pH4lhwLQcA2FC",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "swethajeyachandran28@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fields\": {\r\n        \"project\": {\r\n            \"key\": \"APS\"\r\n        },\r\n        \"summary\": \"{{Summary_PBug}}\",\r\n        \"description\": \"{{Description_Pbug}}\",\r\n        \"priority\": {\r\n            \"name\": \"{{Pname_Pbug}}\"\r\n        },\r\n        \"issuetype\": {\r\n            \"name\": \"{{Issue_Pbug}}\"\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{JIRAURL}}/rest/api/2/issue/",
+					"protocol": "https",
+					"host": [
+						"{{JIRAURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST_CreateIssue_Bug_subTask",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 203, 204, 205, 206, 207]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"Created\");\r",
+							"});\r",
+							"\r",
+							"var respp=pm.response.json();\r",
+							"var subtask = respp.key;\r",
+							"\r",
+							"console.log(\"The subtask \"+subtask+\" is created for issue \"+pm.globals.get(\"gissueID\"));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Y5o1E4HZ2q5pH4lhwLQcA2FC",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "swethajeyachandran28@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fields\": {\r\n        \"project\": {\r\n            \"key\": \"APS\"\r\n        },\r\n        \"parent\": {\r\n            \"key\": \"{{gissueID}}\"\r\n        },\r\n        \"summary\": \"{{Summary_PsubTask}}\",\r\n        \"description\": \"{{Description_PsubTask}}\",\r\n        \"issuetype\": {\r\n            \"name\": \"{{Issue_PsubTask}}\"\r\n        },\r\n        \"priority\": {\r\n            \"name\": \"{{Pname_PsubTask}}\"\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{JIRAURL}}/rest/api/2/issue/",
+					"protocol": "https",
+					"host": [
+						"{{JIRAURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET_ISSUEByKeyorID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 203, 204, 205, 206, 207]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Y5o1E4HZ2q5pH4lhwLQcA2FC",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "swethajeyachandran28@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{JIRAURL}}/rest/api/2/issue/{{gissueID}}",
+					"protocol": "https",
+					"host": [
+						"{{JIRAURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"{{gissueID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET_IssueProjectbytype",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 203, 204, 205, 206, 207]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Y5o1E4HZ2q5pH4lhwLQcA2FC",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "swethajeyachandran28@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{JIRAURL}}/rest/api/2/issuetype/",
+					"protocol": "https",
+					"host": [
+						"{{JIRAURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issuetype",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT_ISSUEByKeyorID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 203, 204, 205, 206, 207]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"No Content\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Y5o1E4HZ2q5pH4lhwLQcA2FC",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "swethajeyachandran28@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fields\": {\r\n        \"description\": \"{{Description_PPbug}}\",\r\n        \"environment\": \"{{Environment_PPbug}}\",\r\n        \"priority\":{\r\n        \"name\": \"{{Pname_PPbug}}\"\r\n    }\r\n}\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{JIRAURL}}/rest/api/2/issue/{{gissueID}}",
+					"protocol": "https",
+					"host": [
+						"{{JIRAURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"{{gissueID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET_AllissueinProject",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Verify the created Incident is found\", function(){\r",
+							"    var rep =pm.response.json();\r",
+							"    var issueID=pm.globals.get(\"gissueID\");\r",
+							"     var flag =0;\r",
+							"     for(let i=0; i<rep.issues.length; i++){\r",
+							"         if(rep.issues[i].key == issueID ){\r",
+							"             flag =1;\r",
+							"         }\r",
+							"     }\r",
+							"     if(flag == 0){\r",
+							"         console.log(\"The issue \"+pm.globals.get(\"gissueID\")+\" is deleted from the project\");\r",
+							"     }\r",
+							"     else if(flag == 1){\r",
+							"         console.log(\"The issue \"+pm.globals.get(\"gissueID\")+\" is available in the project\");\r",
+							"     }\r",
+							"       \r",
+							"     }\r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Y5o1E4HZ2q5pH4lhwLQcA2FC",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "swethajeyachandran28@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{JIRAURL}}/rest/api/2/search?jql=project=\"APS\"",
+					"protocol": "https",
+					"host": [
+						"{{JIRAURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"search"
+					],
+					"query": [
+						{
+							"key": "jql",
+							"value": "project=\"APS\""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET_AllissueinProjectbytype",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 203, 204, 205, 206, 207]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Y5o1E4HZ2q5pH4lhwLQcA2FC",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "swethajeyachandran28@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{JIRAURL}}/rest/api/2/issuetype",
+					"protocol": "https",
+					"host": [
+						"{{JIRAURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issuetype"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_DeleteIssue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 203, 204, 205, 206, 207]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Y5o1E4HZ2q5pH4lhwLQcA2FC",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "swethajeyachandran28@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://{{JIRAURL}}/rest/api/2/issue/{{gissueID}}?deleteSubtasks=true",
+					"protocol": "https",
+					"host": [
+						"{{JIRAURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"{{gissueID}}"
+					],
+					"query": [
+						{
+							"key": "deleteSubtasks",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "VerifyIssueDeleted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Verify the created Incident is found\", function(){\r",
+							"    var rep =pm.response.json();\r",
+							"    var issueID=pm.globals.get(\"gissueID\");\r",
+							"     var flag =0;\r",
+							"     for(let i=0; i<rep.issues.length; i++){\r",
+							"         if(rep.issues[i].key == issueID ){\r",
+							"             flag =1;\r",
+							"         }\r",
+							"     }\r",
+							"     if(flag == 0){\r",
+							"          console.log(\"The issue \"+pm.globals.get(\"gissueID\")+\" is deleted from the project\");\r",
+							"     }\r",
+							"     else if(flag == 1){\r",
+							"          console.log(\"The issue \"+pm.globals.get(\"gissueID\")+\" is available from the project\");\r",
+							"     }\r",
+							"       \r",
+							"     }\r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Y5o1E4HZ2q5pH4lhwLQcA2FC",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "swethajeyachandran28@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{JIRAURL}}/rest/api/2/search?jql=project=\"APS\"",
+					"protocol": "https",
+					"host": [
+						"{{JIRAURL}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"search"
+					],
+					"query": [
+						{
+							"key": "jql",
+							"value": "project=\"APS\""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "JIRAURL",
+			"value": "swethasj99.atlassian.net"
+		}
+	]
+}
